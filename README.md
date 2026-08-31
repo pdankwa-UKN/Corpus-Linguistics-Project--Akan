@@ -22,9 +22,9 @@ Dependencies handled automatically include: requests, beautifulsoup4, trafilatur
 ##Usage Guide
 Open any Python environment or notebook shell and load your tools cleanly:
 
-python
+```python
 import akcorp_package
-
+```
 url = "https://jw.org"
 
 # 1. Scrape raw contents to JSON
