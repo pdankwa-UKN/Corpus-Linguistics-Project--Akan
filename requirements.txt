@@ -1,5 +1,6 @@
 requests
 beautifulsoup4
 trafilatura
+lxml
 lxml_html_clean
 regex
