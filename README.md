@@ -20,7 +20,7 @@ pip install -e .
 Dependencies handled automatically include: requests, beautifulsoup4, trafilatura, lxml_html_clean, and regex.
 
 ##Usage Guide
-Open any Python environment or notebook shell and load your tools cleanly:
+Open any Python environment or notebook shell and load your tools:
 
 ```python
 import akcorp_package
