@@ -3,12 +3,12 @@
 
 # In[ ]:
 
-#SCRAPING
 from bs4 import BeautifulSoup
 import json
 import requests
 import unicodedata
 
+#SCRAPING
 # HTTP header to mimic browser 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
