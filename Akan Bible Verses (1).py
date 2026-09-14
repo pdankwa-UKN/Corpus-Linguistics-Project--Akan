@@ -79,7 +79,36 @@ except Exception:
     title = "Nhomakorabea - JW.ORG"
 
 #Edit book names ("genesis" -> "Genesis")
-scraped_books = [book.replace("-", " ").title() for book in books_actually_used]
+scraped_books = [book.replace("-", " ").title() for book in # =====================================================================
+# STEP 2: METADATA CAPTURE AND GENERATION
+# =====================================================================
+print("\nGenerating metadata documentation...")
+
+try:
+    downloaded = trafilatura.fetch_url("https://jw.org")
+    metadata_extracted = trafilatura.extract_metadata(downloaded)
+    title = metadata_extracted.title if metadata_extracted else "Nhomakorabea - JW.ORG"
+except Exception:
+    title = "Nhomakorabea - JW.ORG"
+
+# Format the scraped book names nicely (e.g., "genesis" -> "Genesis")
+formatted_books = [book.replace("-", " ").title() for book in bible_books]
+
+metadata_dict = {
+    "title": title,
+    "source_publisher": "JW.ORG",
+    "year_date": "2026",
+    "author_speaker": "Watch Tower Bible and Tract Society",
+    "bible_books": formatted_books  # Automatically captures the books you just scraped!
+}
+
+# Save the metadata file to disk
+with open("metadata.json", "w", encoding="utf-8") as json_file:
+    json.dump(metadata_dict, json_file, ensure_ascii=False, indent=4)
+
+print("Scraping and metadata collection successfully complete!")
+print("Saved: 'scraped_verses.json' and 'metadata.json'")
+]
 
 metadata_dict = {
     "title": title,
