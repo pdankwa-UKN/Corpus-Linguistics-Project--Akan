@@ -80,14 +80,14 @@ except Exception:
     title = "Nhomakorabea - JW.ORG"
 
 #Edit book names ("genesis" -> "Genesis")
-scraped_books = [book.replace("-", " ").title() for book in books_actually_used]
+scraped_books = [book.replace("-", " ").title() for book in bible_books]
 
 metadata_dict = {
     "title": title,
     "source_publisher": "JW.ORG",
     "year_date": "2026",
     "author_speaker": "Watch Tower Bible and Tract Society",
-    "books_scraped": scraped_books  
+    "bible_books": scraped_books  
 }
 
 # Save metadata 
