@@ -3,7 +3,7 @@
 
 # In[ ]:
 
-
+#SCRAPING
 from bs4 import BeautifulSoup
 import json
 import requests
@@ -35,8 +35,6 @@ for book in bible_books:
 
         # Parse HTML text content using BeautifulSoup
         soup = BeautifulSoup(response.text, "html.parser")
-
-        # Locate the verse spans matching your criteria
         verses = soup.find_all("span", class_="verse")
 
         # Process title headers 
@@ -50,7 +48,7 @@ for book in bible_books:
             text = unicodedata.normalize("NFC", text)
             pages.append(text)
 
-        # Map text elements directly to the master output array layout
+        # data collection
         scraped_verses[f"{book}_chapter_{chapter}"] = {
             "url": url,
             "raw_content": pages,
@@ -70,9 +68,9 @@ print(f"{output_filename} saved")
 # In[ ]:
 
 
-# =====================================================================
-# STEP 2: METADATA Extraction
-# =====================================================================
+
+# METADATA EXTRACTION
+
 try:
     downloaded = trafilatura.fetch_url("https://jw.org")
     metadata_extracted = trafilatura.extract_metadata(downloaded)
@@ -95,7 +93,6 @@ metadata_dict = {
 with open("metadata.json", "w", encoding="utf-8") as json_file:
     json.dump(metadata_dict, json_file, ensure_ascii=False, indent=4)
 
-print("Scraping and metadata collection successfully complete!")
 print("Saved: 'scraped_verses.json' and 'metadata.json'")
 
 
@@ -172,7 +169,7 @@ segment_and_tokenize_verses("scraped_verses.json", "tokens_segmented.txt")
 
 # In[ ]:
 
-
+#STOPWORD CREATION AND REMOVAL
 import json
 import re
 
@@ -184,8 +181,8 @@ with open("akan_stopwords.json", "w", encoding="utf-8") as f:
     json.dump(akan_stopwords_list, f, ensure_ascii=False, indent=4)
 print("'akan_stopwords.json' saved .")
 
-# Define the Cleaning Function
 
+#CLEANING AND SEGMENTATION
 def create_clean_verses(input_txt_path, output_txt_path):
     # Load the stop words back from the JSON file
     with open("akan_stopwords.json", "r", encoding="utf-8") as f:
@@ -221,7 +218,7 @@ create_clean_verses("tokens_segmented.txt", "final_verses.txt")
 
 # In[ ]:
 
-
+#TAGGER TRAINING
 import pickle                                    
 from nltk.tag.perceptron import PerceptronTagger  #POS tagger model to train
  
@@ -271,27 +268,23 @@ print("Done!")
 # In[ ]:
 
 
-# CORPUS SEARCH (WITH DYNAMIC POS TAGGING & ANNOTATIONS)
+# CORPUS SEARCH - POS TAGGING & ANNOTATIONS
 import os
 import pickle
 import regex
 
 def corpus_search(input_txt_path, output_txt_path, search_query):
-    # -----------------------------------------------------------------
-    # BACKGROUND POS TAGGING STEP
-    # -----------------------------------------------------------------
+    
+    # Loading trained tagger
     base_dir = os.path.dirname(__file__) if "__file__" in locals() else os.getcwd()
     model_path = os.path.join(base_dir, "akcorp_package", "models", "twi_pos_model.pkl")
 
-    # Load the background tagger if it exists
     if os.path.exists(model_path):
         with open(model_path, "rb") as f:
             akan_tagger = pickle.load(f)
     else:
-        print(f"Warning: Model not found at {model_path}. Running search without tags.")
         akan_tagger = None
-    # -----------------------------------------------------------------
-
+  
     # 1. Load the tokens file
     with open(input_txt_path, "r", encoding="utf-8") as file:
         text = file.read()
@@ -301,10 +294,10 @@ def corpus_search(input_txt_path, output_txt_path, search_query):
     total_tokens = len(tokens_original)
     tokens_lower = [t.lower() for t in tokens_original]
 
-    # Run the background tagger on all tokens if it loaded successfully
+    # Run tagger 
     if akan_tagger:
         tagged_pairs = akan_tagger.tag(tokens_original)
-        # Convert to a dictionary for lightning-fast background lookups
+        # Convert to a dictionary 
         tag_dict = dict(tagged_pairs)
     else:
         tag_dict = {}
