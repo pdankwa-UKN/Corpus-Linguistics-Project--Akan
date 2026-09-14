@@ -30,11 +30,12 @@ import akcorp_package
 ```
 url = "https://jw.org"
 
-# 1. Scrape raw contents to JSON
-akcorp_package.scrape_verses_to_json(url, "final_verses.json")
+# 1. Scrape raw contents and extract metadata to JSON
 
 # 2. Segment sentences and run word tokenization
 akcorp_package.segment_and_tokenize_verses("final_verses.json", "final_verses.txt")
 
-# 3. Enter interactive query evaluation index analysis mode
-akcorp_package.corpus_analysis("final_verses.txt", "search_analysis_results.txt")
+# 3. Enter interactive query  mode
+corpus_analysis
+corpus search
+comprehensive_analysis
